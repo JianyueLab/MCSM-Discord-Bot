@@ -1,21 +1,30 @@
+import os
 import requests
-from settings import URL, APIKEY
 
-def getAll():
-    response = requests.get(str(URL) + '/api/service/remote_services?apikey=' + str(APIKEY))
+URL = os.getenv('URL')
+APIKEY = os.getenv('APIKEY')
+
+pre = []
+
+def getAll(index):
+    response = requests.get(URL + '/api/service/remote_services?apikey=' + APIKEY)
     data = response.json()
-    
-    pre = []
-    
+
     try:
         if data["status"] == 200:
-            for item in data['data']:
-                uuid = item.get('uuid')
-                remarks = item.get('remarks')
-                if uuid and remarks:
-                    pre.append(f'**UUID:** {uuid}, **昵称:** {remarks}')
-                    result = '\n'.join(pre)
+            daemon_data = data['data'][index]
+            daemon_id = daemon_data['uuid']
+            daemon_nickname = daemon_data['remarks']
+            instance_data = daemon_data['instances']
+            for instance in instance_data:
+                instance_uuid = instance['instanceUuid']
+                instance_nickname = instance['config']['nickname']
+                if daemon_id and daemon_nickname:
+                    daemon_result = (f'**节点: ** {daemon_nickname}, **节点ID: ** {daemon_id} \n-----------------------------\n')
+                    pre.append(f'**实例：** {instance_nickname}, **实例ID: ** {instance_uuid}')
+                    result = daemon_result + '\n-----------------------------\n'.join(pre)
             return result
+                
         elif data["status"] == 400:
             result = '请求函数错误'
             return result
