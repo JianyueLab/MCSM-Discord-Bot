@@ -23,5 +23,4 @@
 ### Others:
 
 MIT LICENSE | Copyright (C) 2024 JianyueHugo
-
-新手开发者，代码是屎山。欢迎PR和Issue等渠道帮助优化项目
+欢迎PR和Issue等渠道帮助优化项目
