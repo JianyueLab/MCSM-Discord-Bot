@@ -3,13 +3,13 @@ import os
 import discord
 from discord.ext import commands
 from discord import app_commands
-from scripts import instance_control, list_all, update
+from scripts import instance_control, list_all, update, check_instance
 
 TOKEN = os.getenv('TOKEN')
 conf_version = os.getenv('VERSION')
 
-bot_version = 'v0.0.1'
-build_type = 'Preview Build'
+bot_version = 'v0.0.2'
+build_type = 'Dev / 请不要用于生产等'
 
 # 默认配置
 intents = discord.Intents.all() 
@@ -22,7 +22,7 @@ async def on_ready():
     try:
         synced = await client.tree.sync()
         result = update()
-        print(f"机器人已启动，已同步 {len(synced)} 条指令。{result}")
+        print(f"机器人已启动 | 已同步 {len(synced)} 条指令 | {result}")
         
     except Exception as e:
         print(e)
@@ -49,9 +49,18 @@ async def instance(interaction: discord.Interaction, choices: app_commands.Choic
     await interaction.followup.send(result)
     return
 
+# /check
+@client.tree.command(name='check', description='查看某个特定实例的信息')
+async def check(interaction: discord.Interaction, instance_name: str):
+    await interaction.response.defer(ephemeral=True)
+    result = check_instance(instance_name)
+    await interaction.followup.send(result)
+    return
+
+# /info
 @client.tree.command(name='info', description='bot相关信息')
 async def info(interaction: discord.Interaction):
-    await interaction.response.send_message(f'### MCSManager Discord Bot\nCopyright (C) JianyueHugo | MIT LICENSE\n-------------------------\n- **版本: ** {bot_version} **|** {build_type}')
+    await interaction.response.send_message(f'### MCSManager Discord Bot\nCopyright (C) JianyueHugo | MIT LICENSE\n-------------------------\n- **版本: ** {bot_version} **|** {build_type}\n- **Github Repo: ** https://github.com/jianyuelab/mcsm-discord-bot')
     return
 
 client.run(TOKEN)

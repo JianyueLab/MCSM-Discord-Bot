@@ -81,7 +81,7 @@ def update():
                 # 存入字典
                 instance_nodes[nickname] = {'uuid': instance_uuid, 'daemonId': daemon_uuid, 'status': status}
 
-                result = '成功获取实例列表'
+                result = '成功获取实例信息'
             
     else:
         result = result_judge
@@ -130,11 +130,9 @@ def list_all():
 def instance_control(action, instance_name):
     action_value = action.value
     action_name = action.name
-
-    target_name = instance_name
     
     try: 
-        target_data = instance_nodes[target_name]
+        target_data = instance_nodes[instance_name]
         daemonid = target_data['daemonId']
         instanceid = target_data['uuid']
         
@@ -154,7 +152,7 @@ def instance_control(action, instance_name):
         result_judge = request_judge(original['status'])
         
         if result_judge is True:
-            result = f'已 {action_name} **| 实例：** {target_name}'
+            result = f'已 {action_name} **| 实例：** {instance_name}'
         
         else:
             result = result_judge
@@ -162,4 +160,23 @@ def instance_control(action, instance_name):
     except:
         result = '命令错误'
 
+    return result
+
+def check_instance(instance_name):
+    result_update = update()
+    
+    try:
+        if result_update == '成功获取实例信息':
+            target_data = instance_nodes[instance_name]
+            instance_status = target_data['status']
+            instance_uuid = target_data['uuid']
+
+            result = f'**实例：** {instance_name}\n- **uuid: ** {instance_uuid}\n- **状态: ** {instance_status}'
+            
+        else:
+            result = result_update
+      
+    except:
+        result = '命令错误'
+        
     return result
