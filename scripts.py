@@ -8,49 +8,36 @@ APIKEY = os.getenv('APIKEY')
 
 # 判断访问请求
 def request_judge(result_status):
-    try:
-        if result_status == 200:
-            judge_result = True
-            
-        elif result_status == 400:
-            judge_result = '请求函数错误'
-
-        elif result_status == 403:
-            judge_result = '权限不足'
-
-        elif result_status == 500:
-            judge_result = '服务器内部问题'
-
-        else:
-            judge_result = '请求错误'
+    status_map = {
+        200: True,
+        400: '请求函数错误',
+        403: '权限不足',
+        500: '服务器内部错误'
+    }
     
+    try:
+        if status_map[result_status] is None:
+            return '请求错误'
+        else:
+            return status_map[result_status]
+        
     except requests.exceptions.RequestException as e:
         print({e})
-        judge_result = '请求错误，检查日志予以获取帮助'
-
-    return judge_result
+        return '请求错误，请检查后台予以寻求帮助'
 
 # 判断实例状态
 def status_judge(status_data):
-    if status_data == -1:
-        status = '未知'
-        
-    elif status_data == 0:
-        status = '关闭'
-        
-    elif status_data == 1:
-        status = '正在关闭'
-        
-    elif status_data == 2:
-        status = '正在启动'
-        
-    elif status_data == 3:
-        status = '启动'
-        
+    status_map = {
+        -1: '未知',
+        0: '关闭',
+        1: '正在关闭',
+        2: '正在启动',
+        3: '启动'
+    }
+    if status_map[status_data] is None:
+        return '返回错误'
     else:
-        status = '状态错误'
-
-    return status
+        return status_map[status_data]
 
 # 更新
 def update():
