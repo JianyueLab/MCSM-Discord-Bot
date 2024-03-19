@@ -5,10 +5,13 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from dotenv import load_dotenv
+
 from scripts import instance_control, list_all, update, check_instance
 
+load_dotenv('.env')
+
 TOKEN = os.getenv('TOKEN')
-conf_version = os.getenv('VERSION')
 
 bot_version = 'v0.0.2'
 build_type = 'Dev / 请不要用于生产等'

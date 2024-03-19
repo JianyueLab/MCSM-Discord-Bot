@@ -2,6 +2,10 @@ import os
 
 import requests
 
+from dotenv import load_dotenv
+
+load_dotenv('.env')
+
 # 获取站点地址
 URL = os.getenv('URL')
 # 获取 MCSM APIKEY
