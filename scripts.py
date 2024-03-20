@@ -136,18 +136,25 @@ def instance_control(action, instance_name):
 
         if action_value == 'start':
             response = requests.get(
-                URL + '/api/protected_instance/open?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id)
-            original = response.json()
+                URL + '/api/protected_instance/open?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id
+            )
 
         if action_value == 'restart':
             response = requests.get(
-                URL + '/api/protected_instance/restart?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id)
-            original = response.json()
+                URL + '/api/protected_instance/restart?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id
+            )
 
         if action_value == 'stop':
             response = requests.get(
-                URL + '/api/protected_instance/kill?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id)
-            original = response.json()
+                URL + '/api/protected_instance/kill?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id
+            )
+
+        if action_value == 'kill':
+            response = requests.get(
+                URL + '/api/protected_instance/kill?apikey=' + APIKEY + '&uuid=' + instance_id + '&remote_uuid=' + daemon_id
+            )
+
+        original = response.json()
 
         # 调用函数判断返回
         result_judge = request_judge(original['status'])
