@@ -50,8 +50,8 @@ def status_judge(status_data):
 
 def true_false_judge(data):
     data_map = {
-        'true': '是',
-        'false': '否'
+        True: '是',
+        False: '否'
     }
 
     if data_map[data] is None:
@@ -210,12 +210,12 @@ def check_instance(instance_name):
             auto_restart = true_false_judge(data['config']['eventTask']['autoRestart'])
 
             result = f"""
-                ### 实例: {nickname}\n
-                - **启动命令:** `{start_command}`\n
-                - **暂停命令:** `{stop_command}`\n
-                - **文件编码:** `{file_code}`\n
-                - **是否自动启动:** {auto_start}\n
-                - **是否自启:** {auto_restart}'
+                ### 实例: {nickname}
+                - **启动命令:** `{start_command}`
+                - **暂停命令:** `{stop_command}`
+                - **文件编码:** `{file_code}`
+                - **是否自动启动:** {auto_start}
+                - **是否自动重启:** {auto_restart}
             """
 
         else:

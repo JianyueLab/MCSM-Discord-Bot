@@ -72,7 +72,8 @@ async def check(interaction: discord.Interaction, instance_name: str):
 @client.tree.command(name='info', description='bot相关信息')
 async def info(interaction: discord.Interaction):
     await interaction.response.send_message(
-        f'### MCSManager Discord Bot\nCopyright (C) JianyueLab | MIT LICENSE\n-------------------------\n- **版本: ** {bot_version} **|** {build_type}\n- **Github Repo: ** https://github.com/jianyuelab/mcsm-discord-bot\n欢迎通过PR或ISSUE来帮助优化项目')
+        f'### MCSManager Discord Bot\nCopyright (C) JianyueLab | MIT LICENSE\n-------------------------\n- **版本: ** {bot_version} **|** {build_type}\n- **Github Repo: ** https://github.com/jianyuelab/mcsm-discord-bot\n欢迎通过PR或ISSUE来帮助优化项目'
+    )
     return
 
 
