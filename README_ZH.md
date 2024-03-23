@@ -4,7 +4,7 @@
 
 ### Introduction:
 
-本bot是基于[MCSManager](https://mcsmanager.com)的面板，所创建的discord控制机器人。
+本bot是基于[MCSManager](https://mcsmanager.com)面板，所开发的discord控制机器人。
 
 ### Features:
 

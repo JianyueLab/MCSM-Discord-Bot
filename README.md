@@ -2,6 +2,8 @@
 
 ## MCSM-Discord-Bot （Developing）
 
+**|** [Chinese](https://github.com/JianyueLab/MCSM-Discord-Bot/blob/main/README_ZH.md) **|**
+
 ### Introduction:
 
 This bot is base on [MCSManager](https://mcsmanager.com) Panel.
