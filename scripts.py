@@ -28,7 +28,7 @@ def request_judge(result_status):
             return status_map[result_status]
 
     except requests.exceptions.RequestException as e:
-        print({e})
+        print('发生错误: ', e)
         return '请求错误，请检查后台予以寻求帮助'
 
 
@@ -177,8 +177,9 @@ def instance_control(action, instance_name):
         else:
             result = result_judge
 
-    except:
-        result = '命令错误'
+    except Exception as e:
+        print('发生错误：', e)
+        result = '发生错误，请检查控制台获取更多信息'
 
     return result
 
@@ -203,6 +204,7 @@ def check_instance(instance_name):
 
         if result_request is True:
             nickname = data['config']['nickname']
+            status = status_judge(data['status'])
             start_command = data['config']['startCommand']
             stop_command = data['config']['stopCommand']
             file_code = data['config']['fileCode']
@@ -211,6 +213,7 @@ def check_instance(instance_name):
 
             result = f"""
                 ### 实例: {nickname}
+                - **状态:** {status}
                 - **启动命令:** `{start_command}`
                 - **暂停命令:** `{stop_command}`
                 - **文件编码:** `{file_code}`
@@ -222,7 +225,66 @@ def check_instance(instance_name):
             return result_request
 
     except Exception as e:
-        print("发生错误: ", e)
-        result = '命令错误, 检查命令'
+        print('发生错误: ', e)
+        result = '发生错误，请检查控制台获取更多信息'
+
+    return result
+
+
+def getOutput(instance_name, size):
+    update()
+
+    instance_id = instance_nodes[instance_name]['uuid']
+    daemon_id = instance_nodes[instance_name]['daemonId']
+
+    try:
+        response = requests.get(
+            URL + '/api/protected_instance/outputlog?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id + '&size=' + size
+        )
+
+        data = response.json()
+
+        request_result = request_judge(data['status'])
+
+        if request_result is True:
+            result = f"""
+            ```bash
+            {data['data']}
+            ```
+            """
+        else:
+            return request_result
+
+    except Exception as e:
+        print('发生错误: ', e)
+        result = '发生错误，请检查控制台获取更多信息'
+
+    return result
+
+
+def sendCommand(instance_name, command):
+    update()
+
+    instance_id = instance_nodes[instance_name]['uuid']
+    daemon_id = instance_nodes[instance_name]['daemonId']
+
+    try:
+        response = requests.get(
+            URL + '/api/protected_instance/command?apikey=' + APIKEY + '&uuid=' + instance_id + '&daemonId=' + daemon_id + '&commands' + command
+        )
+
+        data = response.json()
+
+        request_result = request_judge(data['status'])
+
+        if request_result is True:
+            result = f'已发送 | {instance_name}'
+        else:
+            result = data['data']
+
+
+    except Exception as e:
+        print('发生错误', e)
+        result = '发生错误，请检查控制台获取更多信息'
 
     return result

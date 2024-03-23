@@ -7,7 +7,7 @@ from discord.ext import commands
 
 from dotenv import load_dotenv
 
-from scripts import instance_control, list_all, update, check_instance
+from scripts import instance_control, list_all, update, check_instance, getOutput, sendCommand
 
 load_dotenv('.env')
 
@@ -67,6 +67,19 @@ async def check(interaction: discord.Interaction, instance_name: str):
     await interaction.followup.send(result)
     return
 
+
+@client.tree.command(name='output', description='获取实例输出')
+async def output(interaction: discord.Interaction, instance_name: str, size: str):
+    await interaction.response.defer(ephemeral=True)
+    result = getOutput(instance_name, size)
+    await interaction.followup.send(result)
+
+
+@client.tree.command(name='send', description='发送命令')
+async def send(interaction: discord.Interaction, instance_name: str, command: str):
+    await interaction.response.defer(ephemeral=True)
+    result = sendCommand(instance_name, command)
+    await interaction.followup.send(result)
 
 # /info
 @client.tree.command(name='info', description='bot相关信息')
